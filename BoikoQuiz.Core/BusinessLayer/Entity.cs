@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Core
+namespace BoikoQuiz.Core.BusinessLayer
 {
-    public class Class1
+    class Entity
     {
     }
 }
