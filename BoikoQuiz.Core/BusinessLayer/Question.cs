@@ -1,13 +1,10 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using SQLite.Net.Attributes;
 
 namespace BoikoQuiz.Core.BusinessLayer
 {
-    class Question
+    public class Question : Entity
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
         public string Text { get; set; }
         public List<Answer> Answers { get; set; }
         public int CorectAnswerId { get; }

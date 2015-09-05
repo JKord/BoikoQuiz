@@ -1,6 +1,6 @@
 ﻿namespace BoikoQuiz.Core.BusinessLayer
 {
-    public class Answer
+    public class Answer : Entity
     {
         public string Text { get; set; }
     }
