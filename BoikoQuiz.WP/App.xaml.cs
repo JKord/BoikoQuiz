@@ -1,134 +1,247 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region namespace
+using System;
+using System.Diagnostics;
+using System.Resources;
+using System.Windows;
+using System.Windows.Markup;
+using System.Windows.Navigation;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using BoikoQuiz.WP.Resources;
+using BoikoQuiz.Core.DataLayer;
+using SQLite.Net.Platform.WindowsPhone8;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
-using Windows.UI.Xaml.Navigation;
-
-// Документацию по шаблону "Пустое приложение" см. по адресу http://go.microsoft.com/fwlink/?LinkId=391641
+using Windows.Storage;
+using System.Threading.Tasks;
+#endregion;
 
 namespace BoikoQuiz.WP
 {
-    /// <summary>
-    /// Обеспечивает зависящее от конкретного приложения поведение, дополняющее класс Application по умолчанию.
-    /// </summary>
-    public sealed partial class App : Application
+    public partial class App : Application
     {
-        private TransitionCollection transitions;
+        #region Fields
+
+        private static Database database;
+        public static Database Database { get { return GetDatabase(); } }
 
         /// <summary>
-        /// Инициализирует одноэлементный объект приложения.  Это первая выполняемая строка разрабатываемого
-        /// кода; поэтому она является логическим эквивалентом main() или WinMain().
+        /// Обеспечивает быстрый доступ к корневому кадру приложения телефона.
+        /// </summary>
+        /// <returns>Корневой кадр приложения телефона.</returns>
+        public static PhoneApplicationFrame RootFrame { get; private set; }
+
+        #endregion
+        public static Database GetDatabase()
+        {
+            if (database == null)
+            {
+                database = new Database(new SQLitePlatformWP8(), Path.Combine(Path.Combine(ApplicationData.Current.LocalFolder.Path, "boikoQuiz.sqlite")));
+                database.Initialize();
+            }
+
+            return database;
+        }
+
+        /// <summary>
+        /// Конструктор объекта приложения.
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += this.OnSuspending;
-        }
+            // Глобальный обработчик неперехваченных исключений.
+            UnhandledException += Application_UnhandledException;
 
-        /// <summary>
-        /// Вызывается при обычном запуске приложения пользователем.  Будут использоваться другие точки входа,
-        /// если приложение запускается для открытия конкретного файла, отображения
-        /// результатов поиска и т. д.
-        /// </summary>
-        /// <param name="e">Сведения о запросе и обработке запуска.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
-        {
-#if DEBUG
-            if (System.Diagnostics.Debugger.IsAttached)
+            // Стандартная инициализация XAML
+            InitializeComponent();
+
+            // Инициализация телефона
+            InitializePhoneApplication();
+
+            // Инициализация отображения языка
+            InitializeLanguage();
+
+            // Отображение сведений о профиле графики во время отладки.
+            if (Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
-            }
-#endif
+                // Отображение текущих счетчиков частоты смены кадров.
+                Application.Current.Host.Settings.EnableFrameRateCounter = true;
 
-            Frame rootFrame = Window.Current.Content as Frame;
+                // Отображение областей приложения, перерисовываемых в каждом кадре.
+                //Application.Current.Host.Settings.EnableRedrawRegions = true;
 
-            // Не повторяйте инициализацию приложения, если в окне уже имеется содержимое,
-            // только обеспечьте активность окна
-            if (rootFrame == null)
-            {
-                // Создание фрейма, который станет контекстом навигации, и переход к первой странице
-                rootFrame = new Frame();
+                // Включение режима визуализации анализа нерабочего кода,
+                // для отображения областей страницы, переданных в GPU, с цветным наложением.
+                //Application.Current.Host.Settings.EnableCacheVisualization = true;
 
-                // TODO: Измените это значение на размер кэша, подходящий для вашего приложения
-                rootFrame.CacheSize = 1;
-
-                // Задайте язык по умолчанию
-                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    // TODO: Загрузить состояние из ранее приостановленного приложения
-                }
-
-                // Размещение фрейма в текущем окне
-                Window.Current.Content = rootFrame;
+                // Предотвратить выключение экрана в режиме отладчика путем отключения
+                // определения состояния простоя приложения.
+                // Внимание! Используйте только в режиме отладки. Приложение, в котором отключено обнаружение бездействия пользователя, будет продолжать работать
+                // и потреблять энергию батареи, когда телефон не будет использоваться.
+                PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
-            if (rootFrame.Content == null)
+        }
+
+        // Код для выполнения при запуске приложения (например, из меню "Пуск")
+        // Этот код не будет выполняться при повторной активации приложения
+        private void Application_Launching(object sender, LaunchingEventArgs e)
+        {
+        }
+
+        // Код для выполнения при активации приложения (переводится в основной режим)
+        // Этот код не будет выполняться при первом запуске приложения
+        private void Application_Activated(object sender, ActivatedEventArgs e)
+        {
+        }
+
+        // Код для выполнения при деактивации приложения (отправляется в фоновый режим)
+        // Этот код не будет выполняться при закрытии приложения
+        private void Application_Deactivated(object sender, DeactivatedEventArgs e)
+        {
+        }
+
+        // Код для выполнения при закрытии приложения (например, при нажатии пользователем кнопки "Назад")
+        // Этот код не будет выполняться при деактивации приложения
+        private void Application_Closing(object sender, ClosingEventArgs e)
+        {
+        }
+
+        // Код для выполнения в случае ошибки навигации
+        private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            if (Debugger.IsAttached)
             {
-                // Удаляет турникетную навигацию для запуска.
-                if (rootFrame.ContentTransitions != null)
-                {
-                    this.transitions = new TransitionCollection();
-                    foreach (var c in rootFrame.ContentTransitions)
-                    {
-                        this.transitions.Add(c);
-                    }
-                }
-
-                rootFrame.ContentTransitions = null;
-                rootFrame.Navigated += this.RootFrame_FirstNavigated;
-
-                // Если стек навигации не восстанавливается для перехода к первой странице,
-                // настройка новой страницы путем передачи необходимой информации в качестве параметра
-                // навигации
-                if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
-                {
-                    throw new Exception("Failed to create initial page");
-                }
+                // Ошибка навигации; перейти в отладчик
+                Debugger.Break();
             }
-
-            // Обеспечение активности текущего окна
-            Window.Current.Activate();
         }
 
-        /// <summary>
-        /// Восстанавливает переходы содержимого после запуска приложения.
-        /// </summary>
-        /// <param name="sender">Объект, где присоединен обработчик.</param>
-        /// <param name="e">Сведения о событии перехода.</param>
-        private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
+        // Код для выполнения на необработанных исключениях
+        private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
-            var rootFrame = sender as Frame;
-            rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new NavigationThemeTransition() };
-            rootFrame.Navigated -= this.RootFrame_FirstNavigated;
+            if (Debugger.IsAttached)
+            {
+                // Произошло необработанное исключение; перейти в отладчик
+                Debugger.Break();
+            }
         }
 
-        /// <summary>
-        /// Вызывается при приостановке выполнения приложения.  Состояние приложения сохраняется
-        /// без учета информации о том, будет ли оно завершено или возобновлено с неизменным
-        /// содержимым памяти.
-        /// </summary>
-        /// <param name="sender">Источник запроса приостановки.</param>
-        /// <param name="e">Сведения о запросе приостановки.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
-        {
-            var deferral = e.SuspendingOperation.GetDeferral();
+        #region Инициализация приложения телефона
 
-            // TODO: Сохранить состояние приложения и остановить все фоновые операции
-            deferral.Complete();
+        // Избегайте двойной инициализации
+        private bool phoneApplicationInitialized = false;
+
+        // Не добавляйте в этот метод дополнительный код
+        private void InitializePhoneApplication()
+        {
+            if (phoneApplicationInitialized)
+                return;
+
+            // Создайте кадр, но не задавайте для него значение RootVisual; это позволит
+            // экрану-заставке оставаться активным, пока приложение не будет готово для визуализации.
+            RootFrame = new PhoneApplicationFrame();
+            RootFrame.Navigated += CompleteInitializePhoneApplication;
+
+            // Обработка сбоев навигации
+            RootFrame.NavigationFailed += RootFrame_NavigationFailed;
+
+            // Обработка запросов на сброс для очистки стека переходов назад
+            RootFrame.Navigated += CheckForResetNavigation;
+
+            // Убедитесь, что инициализация не выполняется повторно
+            phoneApplicationInitialized = true;
+        }
+
+        // Не добавляйте в этот метод дополнительный код
+        private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e)
+        {
+            // Задайте корневой визуальный элемент для визуализации приложения
+            if (RootVisual != RootFrame)
+                RootVisual = RootFrame;
+
+            // Удалите этот обработчик, т.к. он больше не нужен
+            RootFrame.Navigated -= CompleteInitializePhoneApplication;
+        }
+
+        private void CheckForResetNavigation(object sender, NavigationEventArgs e)
+        {
+            // Если приложение получило навигацию "reset", необходимо проверить
+            // при следующей навигации, чтобы проверить, нужно ли выполнять сброс стека
+            if (e.NavigationMode == NavigationMode.Reset)
+                RootFrame.Navigated += ClearBackStackAfterReset;
+        }
+
+        private void ClearBackStackAfterReset(object sender, NavigationEventArgs e)
+        {
+            // Отменить регистрацию события, чтобы оно больше не вызывалось
+            RootFrame.Navigated -= ClearBackStackAfterReset;
+
+            // Очистка стека только для "новых" навигаций (вперед) и навигаций "обновления"
+            if (e.NavigationMode != NavigationMode.New && e.NavigationMode != NavigationMode.Refresh)
+                return;
+
+            // Очистка всего стека страницы для согласованности пользовательского интерфейса
+            while (RootFrame.RemoveBackEntry() != null)
+            {
+                ; // ничего не делать
+            }
+        }
+
+        #endregion
+
+        // Инициализация шрифта приложения и направления текста, как определено в локализованных строках ресурсов.
+        //
+        // Чтобы убедиться, что шрифт приложения соответствует поддерживаемым языкам, а
+        // FlowDirection для каждого из этих языков соответствует традиционному направлению, ResourceLanguage
+        // и ResourceFlowDirection необходимо инициализировать в каждом RESX-файле, чтобы эти значения совпадали с
+        // культурой файла. Пример:
+        //
+        // AppResources.es-ES.resx
+        //    Значение ResourceLanguage должно равняться "es-ES"
+        //    Значение ResourceFlowDirection должно равняться "LeftToRight"
+        //
+        // AppResources.ar-SA.resx
+        //     Значение ResourceLanguage должно равняться "ar-SA"
+        //     Значение ResourceFlowDirection должно равняться "RightToLeft"
+        //
+        // Дополнительные сведения о локализации приложений Windows Phone см. на странице http://go.microsoft.com/fwlink/?LinkId=262072.
+        //
+        private void InitializeLanguage()
+        {
+            try
+            {
+                // Задать шрифт в соответствии с отображаемым языком, определенным
+                // строкой ресурса ResourceLanguage для каждого поддерживаемого языка.
+                //
+                // Откат к шрифту нейтрального языка, если отображаемый
+                // язык телефона не поддерживается.
+                //
+                // Если возникла ошибка компилятора, ResourceLanguage отсутствует в
+                // файл ресурсов.
+                RootFrame.Language = XmlLanguage.GetLanguage(AppResources.ResourceLanguage);
+
+                // Установка FlowDirection для всех элементов в корневом кадре на основании
+                // строки ресурса ResourceFlowDirection для каждого
+                // поддерживаемого языка.
+                //
+                // Если возникла ошибка компилятора, ResourceFlowDirection отсутствует в
+                // файл ресурсов.
+                FlowDirection flow = (FlowDirection)Enum.Parse(typeof(FlowDirection), AppResources.ResourceFlowDirection);
+                RootFrame.FlowDirection = flow;
+            }
+            catch
+            {
+                // Если здесь перехвачено исключение, вероятнее всего это означает, что
+                // для ResourceLangauge неправильно задан код поддерживаемого языка
+                // или для ResourceFlowDirection задано значение, отличное от LeftToRight
+                // или RightToLeft.
+
+                if (Debugger.IsAttached)
+                {
+                    Debugger.Break();
+                }
+
+                throw;
+            }
         }
     }
 }

@@ -3,6 +3,6 @@
     public class User : Entity
     {
         public string Name { get; set; }
-        public string Photo { get; set; }
+        public string PhotoPath { get; set; }
     }
 }

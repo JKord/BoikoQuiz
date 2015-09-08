@@ -1,0 +1,6 @@
+D:\Projects\local\BoikoQuiz\BoikoQuiz.WP2\obj\x86\Debug\BoikoQuiz.WP2.csprojResolveAssemblyReference.cache
+D:\Projects\local\BoikoQuiz\BoikoQuiz.WP2\obj\x86\Debug\App.g.cs
+D:\Projects\local\BoikoQuiz\BoikoQuiz.WP2\obj\x86\Debug\MainPage.g.cs
+D:\Projects\local\BoikoQuiz\BoikoQuiz.WP2\obj\x86\Debug\BoikoQuiz.WP.g.resources
+D:\Projects\local\BoikoQuiz\BoikoQuiz.WP2\obj\x86\Debug\BoikoQuiz.WP.Resources.AppResources.resources
+D:\Projects\local\BoikoQuiz\BoikoQuiz.WP2\obj\x86\Debug\BoikoQuiz.WP2.csproj.GenerateResource.Cache
