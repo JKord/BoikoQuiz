@@ -1,11 +1,12 @@
 ﻿#region namespace
-using System;
+using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using SQLite.Net;
 using SQLite.Net.Async;
 using SQLite.Net.Interop;
+using Newtonsoft.Json.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using BoikoQuiz.Core.BusinessLayer;
 using BoikoQuiz.Core.Event;
 #endregion
@@ -25,17 +26,52 @@ namespace BoikoQuiz.Core.DataLayer
             _connectionParameters = new SQLiteConnectionString(databasePath, false);
             _sqliteConnectionPool = new SQLiteConnectionPool(platform);
 
-            _dbConnection = new SQLiteAsyncConnection(() => _sqliteConnectionPool.GetConnection(_connectionParameters));          
+            _dbConnection = new SQLiteAsyncConnection(() => _sqliteConnectionPool.GetConnection(_connectionParameters));
+
+            Repository.Repository.Db = this;
         }
 
         public async void Initialize()
         {
-            //await _dbConnection.CreateTableAsync<User>();
+            await _dbConnection.CreateTableAsync<User>();
+            await _dbConnection.CreateTableAsync<Answer>();
+            await _dbConnection.CreateTableAsync<Question>();
+
+            Task.WaitAll();
+            loadData();
+
+            return;
+        }
+
+        private void loadData()
+        {
+            string text = "";            
+            Stream stream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("BoikoQuiz.Core.data.json");
+            using (var reader = new StreamReader(stream)) {
+                text = reader.ReadToEnd();               
+            }
+
+            var parsedJson = JObject.Parse(text);
+
+            List<User> users = new List<User>();
+            foreach (var question in parsedJson["users"])
+                users.Add(User.createByJToken(question));
+            AddNew(users);
+
+            List<Question> questions = new List<Question>();
+            foreach (var question in parsedJson["questions"])
+                questions.Add(Question.createByJToken(question));
+            AddNew(questions);
         }
 
         public async void AddNew(Entity item)
         {
             await _dbConnection.InsertAsync(item);
+        }
+
+        public async void AddNew(IEnumerable<Entity> items)
+        {
+            await _dbConnection.InsertAllAsync(items);
         }
 
         public async void Update(Entity item)
@@ -46,12 +82,21 @@ namespace BoikoQuiz.Core.DataLayer
         public async void Delete(Entity item)
         {
             await _dbConnection.DeleteAsync(item);
-        }        
+        }
 
-        public async void GetAllUser(DBEventHandler<User> completed)
+        public async void ExecuteList<T>(DBEventHandler<T> completed) where T : Entity
         {
-            var eventArgs = new DBEventArgs<User>();
-            eventArgs.Result = await _dbConnection.Table<User>().ToListAsync();
+            var eventArgs = new DBEventArgs<T>();
+            eventArgs.Result = await _dbConnection.Table<T>().ToListAsync();
+
+            completed(this, eventArgs);
+            completed = null;
+        }
+
+        public async void Execute<T>(AsyncTableQuery<T> query, DBEventHandler<T> completed) where T : Entity
+        {
+            var eventArgs = new DBEventArgs<T>();
+            eventArgs.Result = await query.ToListAsync();
 
             completed(this, eventArgs);
             completed = null;

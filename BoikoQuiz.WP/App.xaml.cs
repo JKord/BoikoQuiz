@@ -12,7 +12,6 @@ using BoikoQuiz.Core.DataLayer;
 using SQLite.Net.Platform.WindowsPhone8;
 using System.IO;
 using Windows.Storage;
-using System.Threading.Tasks;
 #endregion;
 
 namespace BoikoQuiz.WP
@@ -21,6 +20,7 @@ namespace BoikoQuiz.WP
     {
         #region Fields
 
+        const string DBName = "boikoQuiz.sqlite";
         private static Database database;
         public static Database Database { get { return GetDatabase(); } }
 
@@ -35,8 +35,16 @@ namespace BoikoQuiz.WP
         {
             if (database == null)
             {
-                database = new Database(new SQLitePlatformWP8(), Path.Combine(Path.Combine(ApplicationData.Current.LocalFolder.Path, "boikoQuiz.sqlite")));
-                database.Initialize();
+                bool dbExist = true;
+                try {
+                    StorageFile storageFile = ApplicationData.Current.LocalFolder.GetFileAsync(DBName).GetResults();
+                } catch {
+                    dbExist = false;
+                }
+
+                database = new Database(new SQLitePlatformWP8(), Path.Combine(Path.Combine(ApplicationData.Current.LocalFolder.Path, DBName)));                
+                if (! dbExist)
+                    database.Initialize();
             }
 
             return database;

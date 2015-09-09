@@ -23,13 +23,13 @@ namespace BoikoQuiz.WP
             InitializeComponent();
 
             var db = App.Database;
-            db.AddNew(new User() { Name = "fff", PhotoPath = "22" });
+            //db.AddNew(new User() { Name = "fff", PhotoPath = "22" });
 
-
-            db.GetAllUser((object sender, DBEventArgs<User> ea) => {
+           /* System.Threading.Thread.Sleep(5000);
+            db.GetAllUser((object sender, DBEventArgs<Question> ea) => {
                 var user = ea.Result;
-                string n = user[0].Name;
-            });
+                string n = user[0].Text;
+            });*/
            
             //BuildLocalizedApplicationBar();
         }
