@@ -45,7 +45,7 @@ namespace BoikoQuiz.WP
                     dbExist = false;
                 }
 
-                database = new Database(new SQLitePlatformWP8(), Path.Combine(Path.Combine(ApplicationData.Current.LocalFolder.Path, DBName)));                
+                database = new Database(new SQLitePlatformWP8(), Path.Combine(ApplicationData.Current.LocalFolder.Path, DBName));                
                 if (! dbExist)
                     database.Initialize();
             }

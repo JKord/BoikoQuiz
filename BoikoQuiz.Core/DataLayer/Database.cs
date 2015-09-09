@@ -17,9 +17,14 @@ namespace BoikoQuiz.Core.DataLayer
 
     public class Database
     {
+        #region Fields
+
         private readonly SQLiteAsyncConnection _dbConnection;
         private readonly SQLiteConnectionString _connectionParameters;
         private readonly SQLiteConnectionPool _sqliteConnectionPool;
+        public SQLiteAsyncConnection Dbc { get { return _dbConnection; } }
+
+        #endregion
 
         public Database(ISQLitePlatform platform, string databasePath)
         {
@@ -60,7 +65,11 @@ namespace BoikoQuiz.Core.DataLayer
 
             List<Question> questions = new List<Question>();
             foreach (var question in parsedJson["questions"])
-                questions.Add(Question.createByJToken(question));
+            {
+                Question q = Question.createByJToken(question);
+                questions.Add(q);
+                AddNew(q.Answers);
+            }               
             AddNew(questions);
         }
 

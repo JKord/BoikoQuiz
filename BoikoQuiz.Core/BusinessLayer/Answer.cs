@@ -14,15 +14,16 @@ namespace BoikoQuiz.Core.BusinessLayer
         public string Text { get; set; }
 
         [ManyToOne]
-        public Question question { get; set; }
+        public Question Question { get; set; }
 
-        public static List<Answer> createByJToken(JToken data)
+        public static List<Answer> createByJToken(JToken data, Question question)
         {
             List<Answer> answers = new List<Answer>();
             foreach (var answer in data)
                 answers.Add(new Answer() {
                     Id = Convert.ToInt32(answer["id"]),
-                    Text = answer["text"].ToString()
+                    Text = answer["text"].ToString(),
+                    Question = question
                 });
 
             return answers;

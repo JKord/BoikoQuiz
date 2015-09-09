@@ -30,16 +30,18 @@ namespace BoikoQuiz.Core.BusinessLayer
 
         public static Question createByJToken(JToken data)
         {
-            return new Question() {
+            Question question = new Question() {
                 Text = data["text"].ToString(),
-                CorectAnswerId = Convert.ToInt32(data["corectAnswerId"]),
-                Answers = Answer.createByJToken(data["answers"])
+                CorectAnswerId = Convert.ToInt32(data["corectAnswerId"])
             };
+            question.Answers = Answer.createByJToken(data["answers"], question);
+
+            return question;
         }
 
         public Answer getCorectAnswer()
         {
-            return Answers.Where<Answer>(a => a.Id == CorectAnswerId).First();
+            return Answers.Where(a => a.Id == CorectAnswerId).First();
         }
 
         public bool isCorectAnswer(Answer answer)

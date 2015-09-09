@@ -12,21 +12,9 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
-
-    <!--LayoutRoot содержит корневую сетку, где размещается все содержимое страницы-->
+    
     <Grid x:Name="LayoutRoot">
-        <phone:Panorama Title="мое приложение">
-
-            <!--Первый элемент Panorama-->
-            <phone:PanoramaItem Header="item1">
-                <Grid/>
-            </phone:PanoramaItem>
-
-            <!--Второй элемент Panorama-->
-            <phone:PanoramaItem Header="item2">
-                <Grid/>
-            </phone:PanoramaItem>
+        <phone:Panorama Title="BoikoQuiz" x:Name="questionPanorama">
         </phone:Panorama>
     </Grid>
-
 </phone:PhoneApplicationPage>

@@ -8,6 +8,7 @@ namespace BoikoQuiz.Core
         public override void Load()
         {
             Bind<RUser>().To<RUser>();
+            Bind<RQuestion>().To<RQuestion>();
         }
     }
 }
