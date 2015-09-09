@@ -3,9 +3,9 @@ using BoikoQuiz.Core.DataLayer;
 
 namespace BoikoQuiz.Core.Repository
 {
-    class RUser : Repository
+    public class RUser : Repository
     {
-        public void GetAllUser(DBEventHandler<User> completed)
+        public void GetAll(DBEventHandler<User> completed)
         {
             Db.ExecuteList(completed);
         }

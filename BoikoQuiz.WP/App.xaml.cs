@@ -1,7 +1,6 @@
 ﻿#region namespace
 using System;
 using System.Diagnostics;
-using System.Resources;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
@@ -12,6 +11,7 @@ using BoikoQuiz.Core.DataLayer;
 using SQLite.Net.Platform.WindowsPhone8;
 using System.IO;
 using Windows.Storage;
+using Ninject;
 #endregion;
 
 namespace BoikoQuiz.WP
@@ -19,6 +19,9 @@ namespace BoikoQuiz.WP
     public partial class App : Application
     {
         #region Fields
+
+        public static IKernel Kernel { get; set; }
+        public static NavigationHelper HNavigation { get; set; }
 
         const string DBName = "boikoQuiz.sqlite";
         private static Database database;
@@ -87,6 +90,7 @@ namespace BoikoQuiz.WP
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+            Kernel = new StandardKernel();
         }
 
         // Код для выполнения при запуске приложения (например, из меню "Пуск")

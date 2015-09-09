@@ -13,7 +13,7 @@ using BoikoQuiz.Core.Event;
 
 namespace BoikoQuiz.Core.DataLayer
 {
-    public delegate void DBEventHandler<T>(object sender, Event.DBEventArgs<T> e);
+    public delegate void DBEventHandler<T>(object sender, DBEventArgs<T> e);
 
     public class Database
     {

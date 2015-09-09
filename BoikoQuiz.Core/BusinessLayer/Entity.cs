@@ -2,7 +2,7 @@
 
 namespace BoikoQuiz.Core.BusinessLayer
 {
-    public class Entity
+    public abstract class Entity
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
