@@ -3,7 +3,7 @@
 namespace BoikoQuiz.WP
 {
     /// <summary>
-    /// Предоставляет доступ к строковым ресурсам.
+    /// Gives the access for strokovыm resources.
     /// </summary>
     public class LocalizedStrings
     {

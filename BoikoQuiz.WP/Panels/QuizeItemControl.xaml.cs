@@ -35,10 +35,10 @@ namespace BoikoQuiz.WP.Panels
             Answer answer = question.getAnswerById(Convert.ToInt32((sender as TextBlock).Tag));
             if (question.isCorectAnswer(answer))
             {
-                MessageBox.Show("Вірно!");
+                MessageBox.Show("True!");
                 App.User.Points += 10;
             } else {
-                MessageBox.Show("Не вірно!");
+                MessageBox.Show("Not right!");
             }
 
             clickNext(this, e);

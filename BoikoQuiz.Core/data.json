@@ -16,162 +16,162 @@
   "questions": [
     {
       "id":  1,
-      "text": "Велике розселення слов’ян тривало впродовж?",
+      "text": "A large settlement of the Slavs lasted for?",
       "corectAnswerId": 1,
       "answers": [
         {
           "id": 1,
-          "text": "І ст. до н. е. – І ст. н. е"
+          "text": "I in. BC. BC. - and art. n. e"
         },
         {
           "id": 2,
-          "text": "І – ІІ ст."
+          "text": "І – ІІ century"
         },
         {
           "id": 3,
-          "text": "ІІІ – IV ст."
+          "text": "ІІІ – IV century"
         },
         {
           "id": 4,
-          "text": "V – VII ст"
+          "text": "V – VII century"
         }
       ]
     },
     {
       "id":  2,
-      "text": "Галицьку православну митрополію було створено за ініціативи князя?",
+      "text": "Galician Orthodox Metropolis was created on the initiative of the prince?",
       "corectAnswerId": 8,
       "answers": [
         {
           "id": 5,
-          "text": "Ярослава Мудрого"
+          "text": "Yaroslav Mudry"
         },
         {
           "id": 6,
-          "text": "Данила Галицького"
+          "text": "Daniel Galician"
         },
         {
           "id": 8,
-          "text": "Лева Даниловича"
+          "text": "Leo D"
         },
         {
           "id": 9,
-          "text": "Юрія І Львовича"
+          "text": "George L"
         }
       ]
     },
     {
       "id":  3,
-      "text": "Затвердження в 70-х рр. XVI ст. урядом Речі Посполитої реєстрового війська стало політичним і правовим?",
+      "text": "Adoption in the 70's. XVI century. Registered Commonwealth government troops has become a political and legal?",
       "corectAnswerId": 12,
       "answers": [
         {
           "id": 10,
-          "text": "об’єднанням шляхти та козацтва"
+          "text": "the union of Cossacks and the nobility"
         },
         {
           "id": 11,
-          "text": "заверш. польсько-українського протистояння"
+          "text": "End. Polish-Ukrainian confrontation"
         },
         {
           "id": 12,
-          "text": "припиненням масового покозачення"
+          "text": "mass termination pokozachennya"
         },
         {
           "id": 13,
-          "text": "козацтво як новий соц. стан"
+          "text": "Cossacks as a new social. state"
         }
       ]
     },
     {
       "id":  4,
-      "text": "Поширення Магдебурзького права в XIV – XVII ст. на українських землях сприяло?",
+      "text": "The spread of Magdeburg law in XIV - XVII century. Ukrainian lands helped?",
       "corectAnswerId": 14,
       "answers": [
         {
           "id": 14,
-          "text": "витісненню з органів іноземців"
+          "text": "displacement of the bodies of foreigners"
         },
         {
           "id": 15,
-          "text": "захисту населення міст від сваволі"
+          "text": "protection of the urban population of tyranny"
         },
         {
           "id": 16,
-          "text": "поглибленню спеціалізації виробництва"
+          "text": "deepening specialization of production"
         },
         {
           "id": 17,
-          "text": "утвердженню панівного становища"
+          "text": "strengthening of dominant position"
         }
       ]
     },
     {
       "id":  5,
-      "text": "Фільварок – це?",
+      "text": "Filvarok - is?",
       "corectAnswerId": 20,
       "answers": [
         {
           "id": 18,
-          "text": "доброчинні товариства української шляхти"
+          "text": "charitable association Ukrainian nobility"
         },
         {
           "id": 19,
-          "text": "форма промислового виробництва"
+          "text": "a form of industrial production"
         },
         {
           "id": 20,
-          "text": "багатогалузеве господарство"
+          "text": "diversified economy"
         },
         {
           "id": 21,
-          "text": "корпоративні організації ремісників"
+          "text": "corporate organization artisans"
         }
       ]
     },
     {
       "id":  6,
-      "text": "Унаслідок Першого поділу Речі Посполитої до володінь Австрійської монархії приєднано?",
+      "text": "As a result of the First Partition of Poland to the holdings of the Austrian monarchy connected?",
       "corectAnswerId": 24,
       "answers": [
         {
           "id": 22,
-          "text": "Волинь"
+          "text": "Volyn"
         },
         {
           "id": 23,
-          "text": "Закарпаття"
+          "text": "Zakarpattya"
         },
         {
           "id": 24,
-          "text": "Східну Галичину"
+          "text": "Eastern Galicia"
         },
         {
           "id": 25,
-          "text": "Північну Буковину"
+          "text": "Northern Bukovina"
         }
       ]
     },
     {
       "id":  7,
-      "text": "Героїчна оборона Севастополя тривала під час російсько-турецької війни?",
+      "text": "The heroic defense of Sevastopol lasted during the Russian-Turkish war?",
       "corectAnswerId": 28,
       "answers": [
         {
           "id": 26,
-          "text": "1700 – 1713 рр."
+          "text": "1700 – 1713 years"
         },
         {
           "id": 27,
-          "text": "1787 – 1791 рр."
+          "text": "1787 – 1791 years"
         },
         {
           "id": 28,
-          "text": "1806 – 1812 рр."
+          "text": "1806 – 1812 years"
         },
         {
           "id": 30,
-          "text": "1853 – 1856 рр."
+          "text": "1853 – 1856 years"
         }
       ]
     }

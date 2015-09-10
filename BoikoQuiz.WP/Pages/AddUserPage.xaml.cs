@@ -19,7 +19,7 @@ namespace BoikoQuiz.WP.Pages
             string name = tbName.Text;
             if (name.Trim() == "")
             {
-                MessageBox.Show("Ім'я не коректне!");
+                MessageBox.Show("Name incorrect!");
                 return;
             }
 

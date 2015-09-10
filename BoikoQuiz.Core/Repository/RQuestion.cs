@@ -28,8 +28,6 @@ namespace BoikoQuiz.Core.Repository
 
             /*return database.Table<Question>()
                     .Join(database.Table<Answer>().Where(t => t.ThemeId == ThemeID)
-                        , m => m.ResId
-                        , t => t.ResId
                         , (m, t) => new { mym = m, myt = t })
                     .Select(a => new Playlist
                     {

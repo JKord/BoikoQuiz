@@ -39,7 +39,7 @@ namespace BoikoQuiz.WP.Pages
                     q.Answers = ea2.Result;
                     questionPanorama.Items.Add(new QuizeItemControl(q, (object s3, EventArgs ea3) => {
                         if (countQuestion >= maxQuestion) {
-                            MessageBox.Show("Тест пройдено! Загальна кількість балів: " + App.User.Points);
+                            MessageBox.Show("Test passed! Total points: " + App.User.Points);
                             NavigationService.GoBack();
                         } else {
                             countQuestion++;

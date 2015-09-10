@@ -15,7 +15,6 @@ namespace BoikoQuiz.WP.Pages
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        // Конструктор
         public MainPage()
         {
             InitializeComponent();
@@ -41,15 +40,11 @@ namespace BoikoQuiz.WP.Pages
         {
             ApplicationBar = new ApplicationBar();
 
-            /*ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
-            appBarButton.Text = AppResources.AppBarButtonText;
-            ApplicationBar.Buttons.Add(appBarButton);*/
-
-            ApplicationBarMenuItem addUseMenuItem = new ApplicationBarMenuItem("Додати персонажа");
+            ApplicationBarMenuItem addUseMenuItem = new ApplicationBarMenuItem("Add character");
             addUseMenuItem.Click += (object sender, EventArgs e) => App.HNavigation.GoToAddPage();
             ApplicationBar.MenuItems.Add(addUseMenuItem);
 
-            ApplicationBarMenuItem leaderMenuItem = new ApplicationBarMenuItem("Лідер борд");
+            ApplicationBarMenuItem leaderMenuItem = new ApplicationBarMenuItem("Leader board");
             leaderMenuItem.Click += (object sender, EventArgs e) => App.HNavigation.GoToLeaderPage();
             ApplicationBar.MenuItems.Add(leaderMenuItem);
         }

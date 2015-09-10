@@ -17,7 +17,7 @@ namespace BoikoQuiz.Core.BusinessLayer
         //[ForeignKey(typeof(Question))]
         public int QuestionId { get; set; }
 
-       // [ManyToOne(CascadeOperations = CascadeOperation.CascadeRead)]
+        //[ManyToOne(CascadeOperations = CascadeOperation.CascadeRead)]
         //public Question Question { get; set; }
 
         public static List<Answer> createByJToken(JToken data, Question question)
