@@ -21,9 +21,9 @@
                 </BusinessLayer:Question.Answers>
             </BusinessLayer:Question>
         </Grid.DataContext>
-        <TextBlock x:Name="text" HorizontalAlignment="Center" Margin="10,10,5,0" TextWrapping="Wrap" Text="{Binding Text}" VerticalAlignment="Top" Width="415" Height="221" TextAlignment="Center"/>
-        <StackPanel Margin="10,236,5,10" x:Name="answerPanel" Tap="AnswerPanel_Tap">
-            <ItemsControl Grid.Column="0" ItemsSource="{Binding Answers}">
+        <TextBlock x:Name="text" HorizontalAlignment="Center" Margin="10,10,5,0" TextWrapping="Wrap" Text="{Binding Text}" VerticalAlignment="Top" Width="415" Height="126" TextAlignment="Center"/>
+        <ListBox Margin="10,141,5,10" x:Name="answerListBox">
+            <ItemsControl ItemsSource="{Binding Answers}" Height="284">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>
@@ -31,10 +31,10 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Text}" HorizontalAlignment="Center" Margin="0,10"/>
+                        <TextBlock Text="{Binding Text}" Tag="{Binding Id}" Tap="answerTextBlock_Tap" Height="50" TextAlignment="Center" Width="416"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
+        </ListBox>
     </Grid>
 </UserControl>

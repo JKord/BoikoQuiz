@@ -13,22 +13,21 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
-    <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel содержит имя приложения и заголовок страницы-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="МОЕ ПРИЛОЖЕНИЕ" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="имя страницы" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
+            <TextBlock Text="Додати Персонажа" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontSize="48"/>
         </StackPanel>
 
-        <!--ContentPanel – поместите здесь дополнительное содержимое-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" VerticalAlignment="Stretch" Grid.ColumnSpan="2">
+            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Ім'я" VerticalAlignment="Top"/>
+            <TextBox x:Name="tbName" HorizontalAlignment="Left" Height="72" Margin="0,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456"/>
+            <Button x:Name="btnAdd" Content="Додати" HorizontalAlignment="Left" Margin="326,119,0,0" VerticalAlignment="Top" Tap="btnAdd_Tap"/>
         </Grid>
     </Grid>
 

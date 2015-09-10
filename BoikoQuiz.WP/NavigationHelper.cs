@@ -21,5 +21,15 @@ namespace BoikoQuiz.WP
         {
             GoTo("/Pages/QuizPage.xaml");
         }
+
+        public void GoToAddPage()
+        {
+            GoTo("/Pages/AddUserPage.xaml");
+        }
+
+        public void GoToLeaderPage()
+        {
+            GoTo("/Pages/LeaderPage.xaml");
+        }
     }
 }

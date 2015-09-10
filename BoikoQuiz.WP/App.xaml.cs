@@ -12,6 +12,7 @@ using SQLite.Net.Platform.WindowsPhone8;
 using System.IO;
 using Windows.Storage;
 using Ninject;
+using BoikoQuiz.Core.BusinessLayer;
 #endregion;
 
 namespace BoikoQuiz.WP
@@ -25,7 +26,9 @@ namespace BoikoQuiz.WP
 
         const string DBName = "boikoQuiz.sqlite";
         private static Database database;
-        public static Database Database { get { return GetDatabase(); } }
+        public static Database Database { get { return database; } }
+
+        public static User User { get; set; }
 
         /// <summary>
         /// Обеспечивает быстрый доступ к корневому кадру приложения телефона.
@@ -34,24 +37,6 @@ namespace BoikoQuiz.WP
         public static PhoneApplicationFrame RootFrame { get; private set; }
 
         #endregion
-        public static Database GetDatabase()
-        {
-            if (database == null)
-            {
-                bool dbExist = true;
-                try {
-                    StorageFile storageFile = ApplicationData.Current.LocalFolder.GetFileAsync(DBName).GetResults();
-                } catch {
-                    dbExist = false;
-                }
-
-                database = new Database(new SQLitePlatformWP8(), Path.Combine(ApplicationData.Current.LocalFolder.Path, DBName));                
-                if (! dbExist)
-                    database.Initialize();
-            }
-
-            return database;
-        }
 
         /// <summary>
         /// Конструктор объекта приложения.
@@ -93,10 +78,18 @@ namespace BoikoQuiz.WP
             Kernel = new StandardKernel();
         }
 
-        // Код для выполнения при запуске приложения (например, из меню "Пуск")
-        // Этот код не будет выполняться при повторной активации приложения
-        private void Application_Launching(object sender, LaunchingEventArgs e)
+        private async void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            bool dbExist = true;
+            try {
+                StorageFile storageFile = await ApplicationData.Current.LocalFolder.GetFileAsync(DBName);
+            } catch {
+                dbExist = false;
+            }
+
+            database = new Database(new SQLitePlatformWP8(), Path.Combine(ApplicationData.Current.LocalFolder.Path, DBName));
+            if (! dbExist)
+                database.Initialize();
         }
 
         // Код для выполнения при активации приложения (переводится в основной режим)

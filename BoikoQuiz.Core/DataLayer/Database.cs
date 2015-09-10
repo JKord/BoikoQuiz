@@ -6,7 +6,6 @@ using SQLite.Net.Async;
 using SQLite.Net.Interop;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using BoikoQuiz.Core.BusinessLayer;
 using BoikoQuiz.Core.Event;
 #endregion
@@ -36,24 +35,21 @@ namespace BoikoQuiz.Core.DataLayer
             Repository.Repository.Db = this;
         }
 
-        public async void Initialize()
+        public void Initialize()
         {
-            await _dbConnection.CreateTableAsync<User>();
-            await _dbConnection.CreateTableAsync<Answer>();
-            await _dbConnection.CreateTableAsync<Question>();
+            _dbConnection.CreateTableAsync<User>();
+            _dbConnection.CreateTableAsync<Answer>();
+            _dbConnection.CreateTableAsync<Question>();
 
-            Task.WaitAll();
             loadData();
-
-            return;
         }
 
-        private void loadData()
+        public void loadData()
         {
             string text = "";            
             Stream stream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("BoikoQuiz.Core.data.json");
             using (var reader = new StreamReader(stream)) {
-                text = reader.ReadToEnd();               
+                text = reader.ReadToEnd();
             }
 
             var parsedJson = JObject.Parse(text);
@@ -68,9 +64,11 @@ namespace BoikoQuiz.Core.DataLayer
             {
                 Question q = Question.createByJToken(question);
                 questions.Add(q);
+
+                AddNew(q);
                 AddNew(q.Answers);
-            }               
-            AddNew(questions);
+            }
+            //AddNew(questions);
         }
 
         public async void AddNew(Entity item)
@@ -110,17 +108,5 @@ namespace BoikoQuiz.Core.DataLayer
             completed(this, eventArgs);
             completed = null;
         }
-
-        /*public async Task<List<Entity>> GetAllToDos()
-        {
-            var result = await _dbConnection.Table<Entity>().OrderByDescending(t => t.TimeStamp).ToListAsync();
-            return result;
-        }
-
-        public async Task<Entity> GetToDoById(int id)
-        {
-            var result = await _dbConnection.Table<Entity>().Where(t => t.Id == id).FirstOrDefaultAsync();
-            return result;
-        }*/
     }
 }

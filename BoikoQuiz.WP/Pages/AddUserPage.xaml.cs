@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿#region namespace
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
+using BoikoQuiz.Core.BusinessLayer;
+#endregion
 
 namespace BoikoQuiz.WP.Pages
 {
@@ -15,6 +12,19 @@ namespace BoikoQuiz.WP.Pages
         public AddUserPage()
         {
             InitializeComponent();
+        }
+
+        private void btnAdd_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            string name = tbName.Text;
+            if (name.Trim() == "")
+            {
+                MessageBox.Show("Ім'я не коректне!");
+                return;
+            }
+
+            App.Database.AddNew(new User() { Name = name });
+            NavigationService.GoBack();
         }
     }
 }

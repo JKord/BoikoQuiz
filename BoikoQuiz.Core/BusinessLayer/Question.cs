@@ -9,6 +9,7 @@ using SQLiteNetExtensions.Attributes;
 
 namespace BoikoQuiz.Core.BusinessLayer
 {
+    [Table("Questions")]
     public class Question : Entity
     {
         #region Fields
@@ -16,7 +17,7 @@ namespace BoikoQuiz.Core.BusinessLayer
         [MaxLength(300)]
         public string Text { get; set; }
 
-        [OneToMany]
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Answer> Answers { get; set; }
 
         public int CorectAnswerId { get; set; }
@@ -31,6 +32,7 @@ namespace BoikoQuiz.Core.BusinessLayer
         public static Question createByJToken(JToken data)
         {
             Question question = new Question() {
+                Id = Convert.ToInt32(data["id"]),
                 Text = data["text"].ToString(),
                 CorectAnswerId = Convert.ToInt32(data["corectAnswerId"])
             };
@@ -41,7 +43,20 @@ namespace BoikoQuiz.Core.BusinessLayer
 
         public Answer getCorectAnswer()
         {
-            return Answers.Where(a => a.Id == CorectAnswerId).First();
+            try {
+                return Answers.Where(a => a.Id == CorectAnswerId).First();
+            } catch {
+                return Answers[0];
+            }
+        }
+
+        public Answer getAnswerById(int id)
+        {
+            try {
+                return Answers.Where(a => a.Id == id).First();
+            } catch {
+                return Answers[0];
+            }
         }
 
         public bool isCorectAnswer(Answer answer)

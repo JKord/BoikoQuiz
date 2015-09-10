@@ -1,7 +1,7 @@
 ﻿#region namespace
 using System;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Threading;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Ninject;
@@ -9,7 +9,6 @@ using BoikoQuiz.Core.BusinessLayer;
 using BoikoQuiz.Core.Event;
 using BoikoQuiz.Core.Repository;
 using BoikoQuiz.WP.Panels;
-using BoikoQuiz.WP.Resources;
 #endregion
 
 namespace BoikoQuiz.WP.Pages
@@ -24,32 +23,35 @@ namespace BoikoQuiz.WP.Pages
             var db = App.Database;            
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
 
-            //BuildLocalizedApplicationBar();
+            BuildLocalizedApplicationBar();
         }
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             App.HNavigation = new NavigationHelper(NavigationService);
 
+            UserListPanel.Items.Clear();
             App.Kernel.Get<RUser>().GetAll((object s, DBEventArgs<User> ea) => {
                 foreach (User user in ea.Result)
-                    UserListPanel.Children.Add(new UserItemControl(user));
-            });
+                    UserListPanel.Items.Add(new UserItemControl(user));
+            });   
         }
 
         private void BuildLocalizedApplicationBar()
         {
-            // Установка в качестве ApplicationBar страницы нового экземпляра ApplicationBar.
             ApplicationBar = new ApplicationBar();
 
-            // Создание новой кнопки и установка текстового значения равным локализованной строке из AppResources.
-            ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
+            /*ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
             appBarButton.Text = AppResources.AppBarButtonText;
-            ApplicationBar.Buttons.Add(appBarButton);
+            ApplicationBar.Buttons.Add(appBarButton);*/
 
-            // Создание нового пункта меню с локализованной строкой из AppResources.
-            ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-            ApplicationBar.MenuItems.Add(appBarMenuItem);
+            ApplicationBarMenuItem addUseMenuItem = new ApplicationBarMenuItem("Додати персонажа");
+            addUseMenuItem.Click += (object sender, EventArgs e) => App.HNavigation.GoToAddPage();
+            ApplicationBar.MenuItems.Add(addUseMenuItem);
+
+            ApplicationBarMenuItem leaderMenuItem = new ApplicationBarMenuItem("Лідер борд");
+            leaderMenuItem.Click += (object sender, EventArgs e) => App.HNavigation.GoToLeaderPage();
+            ApplicationBar.MenuItems.Add(leaderMenuItem);
         }
     }
 }

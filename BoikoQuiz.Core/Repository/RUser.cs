@@ -9,5 +9,14 @@ namespace BoikoQuiz.Core.Repository
         {
             Db.ExecuteList(completed);
         }
+
+        public void GetLeaders(DBEventHandler<User> completed)
+        {
+            var query = from u in Db.Dbc.Table<User>()
+                        orderby u.Points descending
+                        select u;
+
+            Db.Execute(query, completed);
+        }
     }
 }
