@@ -18,8 +18,8 @@
         <Border Height="2" VerticalAlignment="Top" Background="White" />
         <Image Source="/Assets/Tiles/FlipCycleTileLarge.png" HorizontalAlignment="Left" Width="105" />
         <TextBlock Text="{Binding Name}"  Foreground="Black" Margin="110,10,10,46" />
-        <TextBlock Text="Points:"  Foreground="Black" Margin="105,59,0,17" FontSize="16" HorizontalAlignment="Left" Width="40" />
-        <TextBlock Text="{Binding Points}"  Foreground="Black" Margin="150,59,0,17" FontSize="16" HorizontalAlignment="Left" Width="320" />
+        <TextBlock Text="Points:"  Foreground="Black" Margin="105,59,0,17" FontSize="16" HorizontalAlignment="Left" Width="55" />
+        <TextBlock Text="{Binding Points}"  Foreground="Black" Margin="165,59,0,17" FontSize="16" HorizontalAlignment="Left" Width="305" />
         <Border Height="2" VerticalAlignment="Bottom" Background="White" />
     </Grid>
 </UserControl>
